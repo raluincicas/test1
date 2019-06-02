@@ -2,7 +2,6 @@ from flask import Flask, request, redirect, render_template, flash
 
 import os
 
-from flask import
 from werkzeug.utils import secure_filename
 
 def create_app(test_config=None):
@@ -66,9 +65,9 @@ def create_app(test_config=None):
                        filename = secure_filename(image.filename)
                        
                        image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
-                     return redirect(request.url)
+                       return redirect(request.url)
                     else:
                         print("That file extension is not allowed")
                         return redirect(request.url)
                         return render_template("public/upload_image.html")
- return app
+    return app
