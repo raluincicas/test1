@@ -105,7 +105,7 @@ def create_app(test_config=None):
         
         #image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
                     row = [1,2]
-                    row1= json.dumps(row1)
+                    row1= json.dumps(row)
                     print(row1)
                     sys.stdout.flush()
                     return row1
