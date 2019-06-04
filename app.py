@@ -1,4 +1,5 @@
 import os
+import json
 
 from flask import Flask, request, redirect, render_template, flash
 from werkzeug.utils import secure_filename
@@ -72,8 +73,8 @@ def create_app(test_config=None):
                         filename = secure_filename(image.filename)
             
                         image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
-                    
-                        return redirect(request.url)
+                        row = [1L,[0.1,0.2],[[1234L,1],[134L,2]]]
+                        return json.dumps(row)
                         
                     else:
                         print("That file extension is not allowed")
