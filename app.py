@@ -43,7 +43,7 @@ def create_app(test_config=None):
     except OSError:
         pass
                                                     
-    app.config["IMAGE_UPLOADS"] = "/Users/ralucaincicas/Documents/Developer/server/static/img/upload"
+    app.config["IMAGE_UPLOADS"] = "/"
     app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG", "GIF"]
     app.config["MAX_IMAGE_FILESIZE"] = 0.5 * 1024 * 1024
 
