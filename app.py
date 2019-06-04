@@ -1,6 +1,18 @@
 import os
 import sys
 import json
+from fastai import *
+from fastai.vision import *
+from torch import *
+
+from torchvision.transforms import ToTensor, ToPILImage
+from PIL import Image
+
+import numpy as np
+from skimage.transform import resize
+
+import torch
+import torch.nn.functional as F
 
 from flask import Flask, request, redirect, render_template, flash, jsonify
 from werkzeug.utils import secure_filename
@@ -21,6 +33,15 @@ class InvalidUsage(Exception):
         rv['message'] = self.message
         return rv
 
+
+class SaveFeatures():
+    features = None
+    
+    def __init__(self, m): self.hook = m.register_forward_hook(self.hook_fn)
+    
+    def hook_fn(self, module, input, output): self.features = output
+    
+    def remove(self): self.hook.remove()
 
 def create_app(test_config=None):
     # create and configure the app
@@ -72,6 +93,37 @@ def create_app(test_config=None):
             return True
         else:
                 return False
+
+                    
+    def predict(image):
+    
+        image = image.resize((224,224))
+
+        target = learn.model[0][-1][-1]
+        heatmap_features_size = (512, 224 // 32, 224 // 32)
+
+        toTensor = ToTensor()
+        img = toTensor(original_img)
+
+
+        sfs = SaveFeatures(target)
+        predictions = torch.sigmoid(learn.model(img.unsqueeze(0))).cpu().detach().numpy()[0]
+        sfs.remove()
+
+        heatmap_features = sfs.features.reshape(heatmap_features_size)
+        values, indices = heatmap_features.max(0)
+
+        heatmap = values.cpu().detach().numpy()
+        heatmap = resize(heatmap, (224, 224), anti_aliasing=True)
+
+        heat_interp = np.interp(heatmap, (heatmap.min(), heatmap.max()), (0, 1))
+        heat_interp = mpl.cm.plasma(heat_interp)[:, :, 0:3]
+        heat_interp = np.uint8(heat_interp * 255)
+        heatmap_pil = Image.fromarray(heat_interp)
+
+        print(predictions)
+
+        Image.blend(image.convert('RGB'), heatmap_pil, alpha=0.5)
 
     @app.errorhandler(InvalidUsage)
     def handle_invalid_usage(error):
