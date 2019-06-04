@@ -5,6 +5,8 @@ import json
 from flask import Flask, request, redirect, render_template, flash
 from werkzeug.utils import secure_filename
 
+
+
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -50,27 +52,35 @@ def create_app(test_config=None):
         else:
                 return False
 
+    @app.errorhandler(InvalidUsage)
+    def handle_invalid_usage(error):
+        response = jsonify(error.to_dict())
+        response.status_code = error.status_code
+        return response
+
 
     @app.route("/upload-image", methods=["GET", "POST"])
     def upload_image():
     
         if request.method == "POST":
             
-            print("ASDASDASDASDASD")
-            sys.stdout.flush()
+            
+            
             if request.files:
             
                 if "filesize" in request.cookies:
                 
                     if not allowed_image_filesize(request.cookies["filesize"]):
                         print("Filesize exceeded maximum limit")
-                        return redirect(request.url)
+                        raise InvalidUsage('Filesize exceeded maximum limit', status_code=410)
+                    
                 
                     image = request.files["image"]
                 
                     if image.filename == "":
                         print("No filename")
-                        return redirect(request.url)
+                         raise InvalidUsage('No filename', status_code=410)
+            
     
                     if allowed_image(image.filename):
                         filename = secure_filename(image.filename)
@@ -79,10 +89,12 @@ def create_app(test_config=None):
                         row = [1,2]
                         json= json.dumps(row)
                         print(json)
+                        sys.stdout.flush()
                         return json
                         
                     else:
                         print("That file extension is not allowed")
+                         raise InvalidUsage('That file extension is not allowed', status_code=410)
                         return redirect(request.url)
 
         return render_template("public/upload_image.html")
