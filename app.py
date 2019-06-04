@@ -88,6 +88,7 @@ def create_app(test_config=None):
             
             print("Requesting")
             sys.stdout.flush()
+            
             if request.files:
             
                 if "filesize" in request.cookies:
@@ -121,6 +122,16 @@ def create_app(test_config=None):
                         print("That file extension is not allowed")
                         sys.stdout.flush()
                         raise InvalidUsage('That file extension is not allowed', status_code=410)
+                else:
+                    print("No filesize in cookies")
+                    sys.stdout.flush()
+                    raise InvalidUsage('No filesize in cookies', status_code=410)
+            
+            else:
+                print("No files in request")
+                sys.stdout.flush()
+                raise InvalidUsage('No files in request', status_code=410)
+    
                        
 
         return render_template("public/upload_image.html")
