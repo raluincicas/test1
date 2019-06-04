@@ -6,6 +6,22 @@ from flask import Flask, request, redirect, render_template, flash, jsonify
 from werkzeug.utils import secure_filename
 
 
+class InvalidUsage(Exception):
+    status_code = 400
+    
+    def __init__(self, message, status_code=None, payload=None):
+        Exception.__init__(self)
+        self.message = message
+        if status_code is not None:
+            self.status_code = status_code
+        self.payload = payload
+    
+    def to_dict(self):
+        rv = dict(self.payload or ())
+        rv['message'] = self.message
+        return rv
+
+
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
