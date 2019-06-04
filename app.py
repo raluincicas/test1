@@ -73,8 +73,10 @@ def create_app(test_config=None):
                         filename = secure_filename(image.filename)
             
                         image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
-                        row = [1L,[0.1,0.2],[[1234L,1],[134L,2]]]
-                        return json.dumps(row)
+                        row = [1,2]
+                        json= json.dumps(row)
+                        print(json)
+                        return json
                         
                     else:
                         print("That file extension is not allowed")
