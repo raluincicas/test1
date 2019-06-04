@@ -49,16 +49,20 @@ def create_app(test_config=None):
 
     def allowed_image(filename):
     
+    
         if not "." in filename:
             return False
-
-        ext = filename.rsplit(".", 1)[1]
-        print(ext.upper())
+        print(". is in filename")
         sys.stdout.flush()
+        ext = filename.rsplit(".", 1)[1]
         
         if ext.upper() in app.config["ALLOWED_IMAGE_EXTENSIONS"]:
+            print("extension is allowed")
+            sys.stdout.flush()
             return True
         else:
+            print("extension is now allowed")
+            sys.stdout.flush()
             return False
 
 
@@ -82,7 +86,8 @@ def create_app(test_config=None):
         if request.method == "POST":
             
             
-            
+            print("Requesting")
+            sys.stdout.flush()
             if request.files:
             
                 if "filesize" in request.cookies:
@@ -100,7 +105,8 @@ def create_app(test_config=None):
                         sys.stdout.flush()
                         raise InvalidUsage('No filename', status_code=410)
             
-    
+                    print("CHECKING FILENAME")
+                    sys.stdout.flush()
                     if allowed_image(image.filename):
                         filename = secure_filename(image.filename)
             
