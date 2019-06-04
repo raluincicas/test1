@@ -2,9 +2,8 @@ import os
 import sys
 import json
 
-from flask import Flask, request, redirect, render_template, flash
+from flask import Flask, request, redirect, render_template, flash, jsonify
 from werkzeug.utils import secure_filename
-
 
 
 def create_app(test_config=None):
@@ -79,7 +78,7 @@ def create_app(test_config=None):
                 
                     if image.filename == "":
                         print("No filename")
-                         raise InvalidUsage('No filename', status_code=410)
+                        raise InvalidUsage('No filename', status_code=410)
             
     
                     if allowed_image(image.filename):
@@ -94,8 +93,8 @@ def create_app(test_config=None):
                         
                     else:
                         print("That file extension is not allowed")
-                         raise InvalidUsage('That file extension is not allowed', status_code=410)
-                        return redirect(request.url)
+                        raise InvalidUsage('That file extension is not allowed', status_code=410)
+                       
 
         return render_template("public/upload_image.html")
             
