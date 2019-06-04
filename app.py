@@ -108,7 +108,7 @@ def create_app(test_config=None):
         heatmap_features_size = (512, 224 // 32, 224 // 32)
 
         toTensor = ToTensor()
-        img = toTensor(original_img)
+        img = toTensor(image)
 
 
         sfs = SaveFeatures(target)
@@ -127,8 +127,9 @@ def create_app(test_config=None):
         heatmap_pil = Image.fromarray(heat_interp)
 
         print(predictions)
-
+        sys.stdout.flush()
         Image.blend(image.convert('RGB'), heatmap_pil, alpha=0.5)
+        return json.dumps(predictions)
 
     @app.errorhandler(InvalidUsage)
     def handle_invalid_usage(error):
@@ -161,11 +162,8 @@ def create_app(test_config=None):
                     filename = secure_filename(image.filename)
         
         #image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
-                    row = [1,2]
-                    row1= json.dumps(row)
-                    print(row1)
-                    sys.stdout.flush()
-                    return row1
+        
+                    return predict(image)
                 
                 else:
                     print("That file extension is not allowed")
