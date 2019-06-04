@@ -3,7 +3,7 @@ gunicorn
 django-heroku
 flask
 Werkzeug
-torch-cpu
+http://download.pytorch.org/whl/cpu/torch-0.4.1-cp36-cp36m-linux_x86_64.whl
 torchvision-cpu
 numpy
 scikit-image
