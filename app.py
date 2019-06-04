@@ -91,41 +91,30 @@ def create_app(test_config=None):
             
             if request.files:
             
-                if "filesize" in request.cookies:
-                
-                    if not allowed_image_filesize(request.cookies["filesize"]):
-                        print("Filesize exceeded maximum limit")
-                        sys.stdout.flush()
-                        raise InvalidUsage('Filesize exceeded maximum limit', status_code=410)
-                    
-                
-                    image = request.files["image"]
-                
-                    if image.filename == "":
-                        print("No filename")
-                        sys.stdout.flush()
-                        raise InvalidUsage('No filename', status_code=410)
+                image = request.files["image"]
             
-                    print("CHECKING FILENAME")
+                if image.filename == "":
+                    print("No filename")
                     sys.stdout.flush()
-                    if allowed_image(image.filename):
-                        filename = secure_filename(image.filename)
-            
-                        image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
-                        row = [1,2]
-                        json= json.dumps(row)
-                        print(json)
-                        sys.stdout.flush()
-                        return json
-                        
-                    else:
-                        print("That file extension is not allowed")
-                        sys.stdout.flush()
-                        raise InvalidUsage('That file extension is not allowed', status_code=410)
+                    raise InvalidUsage('No filename', status_code=410)
+        
+                print("CHECKING FILENAME")
+                sys.stdout.flush()
+                if allowed_image(image.filename):
+                    filename = secure_filename(image.filename)
+        
+                    image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+                    row = [1,2]
+                    json= json.dumps(row)
+                    print(json)
+                    sys.stdout.flush()
+                    return json
+                
                 else:
-                    print("No filesize in cookies")
+                    print("That file extension is not allowed")
                     sys.stdout.flush()
-                    raise InvalidUsage('No filesize in cookies', status_code=410)
+                    raise InvalidUsage('That file extension is not allowed', status_code=410)
+
             
             else:
                 print("No files in request")
