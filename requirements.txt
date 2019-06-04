@@ -3,3 +3,7 @@ gunicorn
 django-heroku
 flask
 Werkzeug
+pytorch
+torchvision
+numpy
+scikit-image
