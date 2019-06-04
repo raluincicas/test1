@@ -103,7 +103,7 @@ def create_app(test_config=None):
                 if allowed_image(image.filename):
                     filename = secure_filename(image.filename)
         
-                    image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+        #image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
                     row = [1,2]
                     json= json.dumps(row)
                     print(json)
