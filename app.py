@@ -97,10 +97,10 @@ def create_app(test_config=None):
                     
     def predict(image):
         classes = ['Fainare', 'Pyrenophora', 'RuginaBruna', 'RuginaGalbena', 'RuginaNeagra']
-        path="/assets"
+        path="assets"
         data2= ImageDataBunch.single_from_classes(path, classes, ds_tfms=get_transforms(),size=224).normalize(imagenet_stats)
         learn = create_cnn(data2, models.resnet34)
-        learn.load('assets/stage-1.pth')
+        learn.load('assets/models/stage-1.pth')
     
         image = image.resize((224,224))
 
