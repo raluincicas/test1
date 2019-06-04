@@ -7,10 +7,10 @@ import os
 app = Flask(__name__)
 
 app.config["IMAGE_UPLOADS"] = "/Users/ralucaincicas/Documents/Developer/server/static/img/upload"
-    app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG", "GIF"]
-    app.config["MAX_IMAGE_FILESIZE"] = 0.5 * 1024 * 1024
+app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG", "GIF"]
+app.config["MAX_IMAGE_FILESIZE"] = 0.5 * 1024 * 1024
     
-    def allowed_image(filename):
+def allowed_image(filename):
         
         if not "." in filename:
             return False
@@ -19,11 +19,11 @@ app.config["IMAGE_UPLOADS"] = "/Users/ralucaincicas/Documents/Developer/server/s
         
         if ext.upper() in app.config["ALLOWED_IMAGE_EXTENSIONS"]:
             return True
-else:
+        else:
     return False
     
     
-    def allowed_image_filesize(filesize):
+def allowed_image_filesize(filesize):
         
         if int(filesize) <= app.config["MAX_IMAGE_FILESIZE"]:
             return True
