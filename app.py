@@ -53,7 +53,9 @@ def create_app(test_config=None):
             return False
 
         ext = filename.rsplit(".", 1)[1]
-
+        print(ext.upper())
+        sys.stdout.flush()
+        
         if ext.upper() in app.config["ALLOWED_IMAGE_EXTENSIONS"]:
             return True
         else:
