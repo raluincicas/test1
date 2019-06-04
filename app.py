@@ -54,7 +54,9 @@ def create_app(test_config=None):
     def upload_image():
     
         if request.method == "POST":
-        
+            
+            print("ASDASDASDASDASD")
+            sys.stdout.flush()
             if request.files:
             
                 if "filesize" in request.cookies:
