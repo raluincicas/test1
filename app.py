@@ -162,8 +162,8 @@ def create_app(test_config=None):
                     filename = secure_filename(image.filename)
         
         #image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
-        
-                    return predict(image)
+                    img = Image.open(image.stream)
+                    return predict(img)
                 
                 else:
                     print("That file extension is not allowed")
