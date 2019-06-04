@@ -87,6 +87,7 @@ def create_app(test_config=None):
                 
                     if not allowed_image_filesize(request.cookies["filesize"]):
                         print("Filesize exceeded maximum limit")
+                        sys.stdout.flush()
                         raise InvalidUsage('Filesize exceeded maximum limit', status_code=410)
                     
                 
@@ -94,6 +95,7 @@ def create_app(test_config=None):
                 
                     if image.filename == "":
                         print("No filename")
+                        sys.stdout.flush()
                         raise InvalidUsage('No filename', status_code=410)
             
     
@@ -109,6 +111,7 @@ def create_app(test_config=None):
                         
                     else:
                         print("That file extension is not allowed")
+                        sys.stdout.flush()
                         raise InvalidUsage('That file extension is not allowed', status_code=410)
                        
 
