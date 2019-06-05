@@ -111,8 +111,7 @@ def create_app(test_config=None):
         learn = create_cnn(data2, models.resnet34)
         learn.load('stage-1')
     
-        dummy = open_image('assets/test3.jpg')
-        pred_class,pred_idx,outputs = learn.predict(dummy)
+        learn.model.eval().float().cpu()
     
         image = image.resize((224,224))
 
