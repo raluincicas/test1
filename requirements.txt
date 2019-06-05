@@ -8,3 +8,4 @@ torchvision==0.2.1
 numpy
 scikit-image
 fastai
+matplotlib

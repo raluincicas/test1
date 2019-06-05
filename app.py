@@ -8,6 +8,8 @@ from torch import *
 from torchvision.transforms import ToTensor, ToPILImage
 from PIL import Image
 
+import matplotlib as mpl
+
 import numpy as np
 from skimage.transform import resize
 
@@ -33,6 +35,13 @@ class InvalidUsage(Exception):
         rv['message'] = self.message
         return rv
 
+def normalize(image):
+    imagenet_stats = ([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    mean = torch.Tensor(imagenet_stats[0])
+    std = torch.Tensor(imagenet_stats[1])
+
+    print(f'Normalize image shape: {image.shape}, mean shape: {mean.shape}, std shape: {std.shape}')
+    return (image - mean[..., None, None]) / std[..., None, None]
 
 class SaveFeatures():
     features = None
@@ -102,6 +111,9 @@ def create_app(test_config=None):
         learn = create_cnn(data2, models.resnet34)
         learn.load('stage-1')
     
+        dummy = open_image('assets/test3.jpg')
+        pred_class,pred_idx,outputs = learn.predict(dummy)
+    
         image = image.resize((224,224))
 
         target = learn.model[0][-1][-1]
@@ -109,10 +121,11 @@ def create_app(test_config=None):
 
         toTensor = ToTensor()
         img = toTensor(image)
-
+        img = normalize(img)
 
         sfs = SaveFeatures(target)
-        predictions = torch.sigmoid(learn.model(img.unsqueeze(0))).cpu().detach().numpy()[0]
+        out = learn.model(img.unsqueeze(0))
+        predictions = torch.sigmoid(out).cpu().detach().numpy()[0]
         sfs.remove()
 
         heatmap_features = sfs.features.reshape(heatmap_features_size)
