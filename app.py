@@ -105,10 +105,11 @@ def create_app(test_config=None):
 
                     
     def predict(image):
+
         classes = ['Fainare', 'Pyrenophora', 'RuginaBruna', 'RuginaGalbena', 'RuginaNeagra']
         path="assets"
         data2= ImageDataBunch.single_from_classes(path, classes, ds_tfms=get_transforms(),size=224).normalize(imagenet_stats)
-        learn = create_cnn(data2, models.resnet34)
+        learn = cnn_learner(data2, models.resnet34)
         learn.load('stage-1')
     
         learn.model.eval().float().cpu()
@@ -141,7 +142,7 @@ def create_app(test_config=None):
         print(predictions)
         sys.stdout.flush()
         Image.blend(image.convert('RGB'), heatmap_pil, alpha=0.5)
-        return json.dumps(predictions)
+        return json.dumps(predictions.tolist())
 
     @app.errorhandler(InvalidUsage)
     def handle_invalid_usage(error):
