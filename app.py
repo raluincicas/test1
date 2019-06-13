@@ -4,6 +4,7 @@ import json
 from fastai import *
 from fastai.vision import *
 from torch import *
+import base64
 
 from torchvision.transforms import ToTensor, ToPILImage
 from PIL import Image
@@ -142,6 +143,9 @@ def create_app(test_config=None):
         print(predictions)
         sys.stdout.flush()
         Image.blend(image.convert('RGB'), heatmap_pil, alpha=0.5)
+        
+     
+        
         return json.dumps(predictions.tolist())
 
     @app.errorhandler(InvalidUsage)
@@ -176,7 +180,11 @@ def create_app(test_config=None):
         
         #image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
                     img = Image.open(image.stream)
-                    return predict(img)
+                    with open(img, "rb") as imageFile:
+                        str = base64.b64encode(imageFile.read())
+                        print(str)
+                    
+                    return str
                 
                 else:
                     print("That file extension is not allowed")
