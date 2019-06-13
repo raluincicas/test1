@@ -189,13 +189,13 @@ def create_app(test_config=None):
                     sys.stdout.flush()
                    
                     
-                    image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+                    #image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
                     
                     img = Image.open(image.stream)
                     
                     
 
-                    with open(filname, "rb") as imageFile:
+                    with open(filename, "rb") as imageFile:
                         str = base64.b64encode(imageFile.read())
                         print(str)
                         sys.stdout.flush()
