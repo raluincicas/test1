@@ -186,8 +186,8 @@ def create_app(test_config=None):
                     predicted_img.save("predicted.jpg")
                     
                     with open("predicted.jpg", "rb") as imageFile:
-                        byte = b64encode(imageFile.read())
-                    string_base64 = byte.decode(ENCODING)
+                        byte_to = base64.b64encode(imageFile.read())
+                    string_base64 = byte_to.decode(ENCODING)
                     str = {'predicted.jpg': string_base64}
                         #json_data = dumps(str, indent =2)
                     print(json.dumps(str))
