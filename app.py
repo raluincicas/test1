@@ -4,7 +4,6 @@ import json
 from fastai import *
 from fastai.vision import *
 from torch import *
-import cv2
 
 import base64
 
