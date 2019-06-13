@@ -4,7 +4,7 @@ import json
 from fastai import *
 from fastai.vision import *
 from torch import *
-import base64
+import cv2
 
 from torchvision.transforms import ToTensor, ToPILImage
 from PIL import Image
@@ -142,11 +142,10 @@ def create_app(test_config=None):
 
         print(predictions)
         sys.stdout.flush()
-        Image.blend(image.convert('RGB'), heatmap_pil, alpha=0.5)
+        return Image.blend(image.convert('RGB'), heatmap_pil, alpha=0.5)
         
-     
         
-        return json.dumps(predictions.tolist())
+        # return json.dumps(predictions.tolist())
 
     @app.errorhandler(InvalidUsage)
     def handle_invalid_usage(error):
@@ -177,29 +176,19 @@ def create_app(test_config=None):
                 sys.stdout.flush()
                 if allowed_image(image.filename):
                     filename = secure_filename(image.filename)
-                    print("-------imagefilename------")
-                    sys.stdout.flush()
-                    print(image.filename)
-                    sys.stdout.flush()
-                    print("-------filename------")
-                    sys.stdout.flush()
-                    print(filename)
-                    sys.stdout.flush()
-                    print("-------file------")
-                    sys.stdout.flush()
-                   
-                    
-                    #image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
-                    
+        
+        #image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
                     img = Image.open(image.stream)
                     
+                    predicted_img = predict(img)
                     
-
-                    with open(filename, "rb") as imageFile:
+                    cv2.imwrite("predicted.jpg", predicted_img)
+                    
+                    with open("predicted.jpg", "rb") as imageFile:
                         str = base64.b64encode(imageFile.read())
                         print(str)
                         sys.stdout.flush()
-                    
+                            
                     return str
                 
                 else:
