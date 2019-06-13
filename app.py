@@ -177,11 +177,6 @@ def create_app(test_config=None):
                 sys.stdout.flush()
                 if allowed_image(image.filename):
                     filename = secure_filename(image.filename)
-                    
-                    file = image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
-                    
-                    img = Image.open(image.stream)
-                    
                     print("-------imagefilename------")
                     sys.stdout.flush()
                     print(image.filename)
@@ -194,8 +189,14 @@ def create_app(test_config=None):
                     sys.stdout.flush()
                     print(file)
                     sys.stdout.flush()
+                    
+                    image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+                    
+                    img = Image.open(image.stream)
+                    
+                    
 
-                    with open(file, "rb") as imageFile:
+                    with open(image, "rb") as imageFile:
                         str = base64.b64encode(imageFile.read())
                         print(str)
                         sys.stdout.flush()
