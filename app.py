@@ -187,8 +187,7 @@ def create_app(test_config=None):
                     sys.stdout.flush()
                     print("-------file------")
                     sys.stdout.flush()
-                    print(file)
-                    sys.stdout.flush()
+                   
                     
                     image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
                     
@@ -196,7 +195,7 @@ def create_app(test_config=None):
                     
                     
 
-                    with open(image, "rb") as imageFile:
+                    with open(filname, "rb") as imageFile:
                         str = base64.b64encode(imageFile.read())
                         print(str)
                         sys.stdout.flush()
