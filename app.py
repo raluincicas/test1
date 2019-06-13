@@ -181,17 +181,24 @@ def create_app(test_config=None):
                     file = image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
                     
                     img = Image.open(image.stream)
-                    print("-------imagefilename------")
-                    print(image.filename)
                     
+                    print("-------imagefilename------")
+                    sys.stdout.flush()
+                    print(image.filename)
+                    sys.stdout.flush()
                     print("-------filename------")
+                    sys.stdout.flush()
                     print(filename)
+                    sys.stdout.flush()
                     print("-------file------")
+                    sys.stdout.flush()
                     print(file)
+                    sys.stdout.flush()
 
                     with open(file, "rb") as imageFile:
                         str = base64.b64encode(imageFile.read())
                         print(str)
+                        sys.stdout.flush()
                     
                     return str
                 
