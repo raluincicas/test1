@@ -6,6 +6,8 @@ from fastai.vision import *
 from torch import *
 import cv2
 
+import base64
+
 from torchvision.transforms import ToTensor, ToPILImage
 from PIL import Image
 
@@ -182,7 +184,7 @@ def create_app(test_config=None):
                     
                     predicted_img = predict(img)
                     
-                    cv2.imwrite("predicted.jpg", predicted_img)
+                    predicted_img.save("predicted.jpg")
                     
                     with open("predicted.jpg", "rb") as imageFile:
                         str = base64.b64encode(imageFile.read())
