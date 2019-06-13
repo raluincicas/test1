@@ -189,8 +189,8 @@ def create_app(test_config=None):
                         str = base64.b64encode(imageFile.read())
                         print(str)
                         sys.stdout.flush()
-                            
-                    return str
+                    return json.dumps(str)
+                    
                 
                 else:
                     print("That file extension is not allowed")
