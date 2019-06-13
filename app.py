@@ -74,7 +74,7 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
-                                                    
+    ENCODING = 'utf-8'
     app.config["IMAGE_UPLOADS"] = "~/"
     app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG", "GIF"]
     app.config["MAX_IMAGE_FILESIZE"] = 0.5 * 1024 * 1024
@@ -186,9 +186,12 @@ def create_app(test_config=None):
                     predicted_img.save("predicted.jpg")
                     
                     with open("predicted.jpg", "rb") as imageFile:
-                        str = base64.b64encode(imageFile.read())
-                        print(str)
-                        sys.stdout.flush()
+                        byte = b64encode(imageFile.read())
+                    string_base64 = byte.decode(ENCODING)
+                    str = {'predicted.jpg': string_base64}
+                        #json_data = dumps(str, indent =2)
+                    print(json.dumps(str))
+                    sys.stdout.flush()
                     return json.dumps(str)
                     
                 
