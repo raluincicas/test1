@@ -178,10 +178,18 @@ def create_app(test_config=None):
                 if allowed_image(image.filename):
                     filename = secure_filename(image.filename)
                     
-        
-                    image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+                    file = image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+                    
                     img = Image.open(image.stream)
-                    with open(image, "rb") as imageFile:
+                    print("-------imagefilename------")
+                    print(image.filename)
+                    
+                    print("-------filename------")
+                    print(filename)
+                    print("-------file------")
+                    print(file)
+
+                    with open(file, "rb") as imageFile:
                         str = base64.b64encode(imageFile.read())
                         print(str)
                     
