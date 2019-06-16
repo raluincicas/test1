@@ -143,7 +143,7 @@ def create_app(test_config=None):
 
         print(predictions)
         sys.stdout.flush()
-        return Image.blend(image.convert('RGB'), heatmap_pil, alpha=0.5)
+        return [Image.blend(image.convert('RGB'), heatmap_pil, alpha=0.5), predictions]
         
         
         # return json.dumps(predictions.tolist())
@@ -181,14 +181,15 @@ def create_app(test_config=None):
         #image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
                     img = Image.open(image.stream)
                     
-                    predicted_img = predict(img)
+                    predicted_items = predict(img)
+                    predicted_img = predicted_items[0]
                     
                     predicted_img.save("predicted.jpg")
                     
                     with open("predicted.jpg", "rb") as imageFile:
                         byte_to = base64.b64encode(imageFile.read())
                     string_base64 = byte_to.decode(ENCODING)
-                    str = {'predicted.jpg': string_base64}
+                    str = {'predicted.jpg': string_base64,'predictions': predicted_items[1]}
                         #json_data = dumps(str, indent =2)
                     print(json.dumps(str))
                     sys.stdout.flush()
