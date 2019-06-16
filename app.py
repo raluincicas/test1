@@ -143,7 +143,7 @@ def create_app(test_config=None):
 
         print(predictions)
         sys.stdout.flush()
-        return [Image.blend(image.convert('RGB'), heatmap_pil, alpha=0.5), predictions]
+        return [Image.blend(image.convert('RGB'), heatmap_pil, alpha=0.5), predictions.tolist()]
         
         
         # return json.dumps(predictions.tolist())
